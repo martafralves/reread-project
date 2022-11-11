@@ -1,5 +1,4 @@
 const Book = require('../models/books.model');
-const User = require('../models/users.model');
 const asyncHandler = require ('express-async-handler');
 
 //GET all books
@@ -53,6 +52,17 @@ const updateBook = asyncHandler( async (req, res) => {
         throw new Error('Book not found')
     }
 
+    if(!req.user) { //check for user
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    //make sure logged in user matches the owner of the book
+    if(book.user.toString() !== req.user._id.toString()){
+        res.status(401)
+        throw new Error ('User not authorized')
+    }
+
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
     res.status(200).json(updatedBook)
@@ -64,6 +74,17 @@ const deleteBook = asyncHandler (async(req, res) => {
         res.status(400)
         throw new Error('Book not found')
     }
+
+    if(!req.user) { //check for user
+        res.status(401)
+        throw new Error('User not found')
+    }
+    
+    //make sure logged in user matches the owner of the book
+    if(book.user.toString() !== req.user._id.toString()){
+        res.status(401)
+        throw new Error ('User not authorized')
+    } 
     
     await book.remove()
     res.status(200).json({id: req.params.id})
