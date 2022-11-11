@@ -1,9 +1,16 @@
 const Book = require('../models/books.model');
+const User = require('../models/users.model');
 const asyncHandler = require ('express-async-handler');
 
 //GET all books
 const getBooks = asyncHandler (async (req, res) => {
     const books = await Book.find()
+    res.status(200). json(books)
+})
+
+//GET  books from logged in  user
+const getBookUser = asyncHandler (async (req, res) => {
+    const books = await Book.find({user: req.user._id})
     res.status(200). json(books)
 })
 
@@ -32,7 +39,8 @@ const createBook = asyncHandler( async(req, res) => {
         delivery: req.body.delivery,
         condition: req.body.condition,
         status: req.body.status,
-        language: req.body.language
+        language: req.body.language,
+        user: req.user._id
     })
     res.status(200).json(book)
 })
@@ -63,6 +71,7 @@ const deleteBook = asyncHandler (async(req, res) => {
 
 module.exports = {
     getBooks,
+    getBookUser,
     getOneBook,
     createBook,
     updateBook,

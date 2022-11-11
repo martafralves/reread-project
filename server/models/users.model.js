@@ -3,19 +3,19 @@ const mongoose = require ('mongoose')
 const usersSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Please add a Name']
     },
     email: {
         type: String,
-        required: true
+        required: [true, 'Please add an Email']
     },
     password: {
         type: String,
-        required: true
+        required: [true, 'Please add a Password']
     },
     username: {
         type: String,
-        required: true
+        required: [true, 'Please add a Username']
     },
     createdAt: {
         type: Date,
@@ -32,6 +32,10 @@ const usersSchema = new mongoose.Schema({
     },
     id:{
         type: String
+    },
+    books: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Books'
     }
 })
 

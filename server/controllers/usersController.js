@@ -22,21 +22,47 @@ const getOneUser = asyncHandler( async(req, res) => {
 })
 
 //create a user
-const createUser = asyncHandler( async(req, res) => {
-    if(!req.body.name || !req.body.username || !req.body.email || !req.body.password || req.body.password.length <= 8){
+const registerUser = asyncHandler( async(req, res) => {
+    const { name, username, email, password} = req.body
+
+    if(!name || !username || !email || !password || password.length <= 8){
         res.status(400)
-        throw new Error('Please complete the required fields and check if your password matches the requirements')
+        throw new Error('Please complete all the required fields and check if your password matches the requirements')
     }
 
+    //check if user exists
+    const userExists = await User.findOne({email})
+
+    if (userExists){
+        res.status(400)
+        throw new Error('User already exists')
+    }
+
+    //password hash
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    //create user
+
     const user = await User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        username: req.body.username,
-        about: req.body.about,
-        payment: req.body.payment
+        name,
+        email,
+        password: hashedPassword,
+        username
     })
-    res.status(200).json(user)
+
+    if(user){
+        res.status(201).json({
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            token: generateToken(user._id),
+        })
+    }else{
+        res.status(400)
+        throw new Error('Invalid user data')
+    }
 })
 
 //update a user
@@ -62,6 +88,47 @@ const deleteUser = asyncHandler (async(req, res) => {
     await user.remove()
     res.status(200).json({id: req.params.id})
 })
+
+const loginUser = asyncHandler (async (req, res) => {
+    const {email, password} = req.body;
+
+    //check user email
+    const user = await User.findOne({email})
+
+    if(user && (await bcrypt.compare(password, user.password))){
+        res.json({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        token: generateToken(user._id)
+        })
+    } else {
+        res.status(400)
+        throw new Error('Invalid credentials')
+    }
+})
+
+const getUserData = asyncHandler (async (req, res) => {
+    const { _id, name, email, username } = await User.findById(req.user._id)
+
+    res.status(200).json({
+        id: _id,
+        name,
+        email,
+        username
+    })
+})
+
+//generate JWT
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '4h',
+    })
+}
+
+
+
 
 
 const loginController = async(req, res) => {
@@ -166,9 +233,11 @@ const signUpController = async(req, res) => {
 module.exports = {
     getUsers,
     getOneUser,
-    createUser,
+    registerUser,
     updateUser,
     deleteUser,
+    loginUser,
+    getUserData,
     loginController,
     signUpController
 }
