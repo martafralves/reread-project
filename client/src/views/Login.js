@@ -1,4 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, reset } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 import {
   MDBBtn,
   MDBContainer,
@@ -10,32 +16,61 @@ import {
   MDBIcon
 }
 from 'mdb-react-ui-kit';
-import {useState, useEffect} from 'react'
 import {Form} from 'react-bootstrap';
-//import '../styles/login-form.css';
 
 //form template modified from this open source: https://mdbootstrap.com/docs/react/extended/login-form/#section-login-popup-example
+
 function Login() {
 
   const [formData, setFormData] = useState({email:'', password:''})
   const {email, password} = formData
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const {user, isLoading, isError, isSuccess, message} = useSelector(
+    (state) => state.auth
+  )
+
   const {register, handleSubmit, formState: { errors }} = useForm();
 
-  function onChange(e){
-    e.preventDefault()
-    setFormData(e.target.value)
-  }
+  useEffect(() => {
+    if(isError){
+     toast.error(message)
+    }
+ 
+    if(isSuccess || user){
+     navigate('/profile')
+    } 
+ 
+    dispatch(reset())
+   }, [user, isError, isSuccess, message, navigate, dispatch])
+ 
+   const onChange = (e) => {
+     setFormData((prevState) => ({
+       ...prevState,
+       [e.target.name]: e.target.value
+     }))
+   }
+ 
 
   function onSubmit(e){
     e.preventDefault()
+
+    const userData = {
+      email,
+      password,
+    }
+    dispatch(login(userData))
   }
 
-
+if(isLoading){
+  return <Spinner/>
+}
 
   return (
     <MDBContainer fluid>
-      <Form onSubmit={() => {handleSubmit(); onSubmit()}}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
       <MDBRow className='d-flex justify-content-center align-items-center h-100'>
         <MDBCol col='12'>
 
@@ -44,13 +79,15 @@ function Login() {
 
               <h2 className="fw-bold mb-2 text-center">Sign in</h2>
 
-              <MDBInput wrapperClass='mb-4 w-100' label='Email address' value={email} id='email' type='email' size="lg" 
+              <MDBInput wrapperClass='mb-4 w-100' name ='email' label='Email address' value={email} id='email' type='email' size="lg" 
               {...register('email', {required:true})} onChange={onChange}/>
-              {errors.email?.type==='required' && 'Email is required'}
-              <MDBInput wrapperClass='mb-4 w-100' label='Password' value={password} id='password' type='password' size="lg" 
+              {errors.email?.type==='required' && (
+                  <p className="errorMsg">Email is required.</p>)}
+                {errors.email?.type==='pattern' && (<p className="errorMsg">Please enter a valid email.</p>)}
+              <MDBInput wrapperClass='mb-4 w-100' name= 'password' label='Password' value={password} id='password' type='password' size="lg" 
               {...register('password', {required:true})} onChange={onChange}/>
-              {errors.password?.type==='required' && 'Password is required'}
-              <MDBBtn size='lg'>
+              {errors.password?.type==='required' && (<p className="errorMsg">Password is required.</p>)}
+              <MDBBtn onClick={onSubmit} size='lg'>
                 Login
               </MDBBtn>
 
