@@ -1,5 +1,7 @@
 const Book = require('../models/books.model');
+const User = require('../models/users.model');
 const asyncHandler = require ('express-async-handler');
+
 
 //GET all books
 const getBooks = asyncHandler (async (req, res) => {
@@ -11,6 +13,26 @@ const getBooks = asyncHandler (async (req, res) => {
 const getBookUser = asyncHandler (async (req, res) => {
     const books = await Book.find({user: req.user._id})
     res.status(200). json(books)
+})
+
+//GET books for a specific user
+
+const getUsersBooks = asyncHandler (async (req, res) => {
+    const findUser = await User.findById(req.params.id)
+    
+    if(!findUser){
+        res.status(400)
+        throw new Error('User not found')
+    }
+    const userBooks = await Book.find({user: findUser})
+    
+    if(!userBooks){
+        res.status(400)
+        throw new Error ('This user has no books')
+    }
+
+    res.status(200).json(userBooks)
+
 })
 
 //GET one book by id
@@ -93,6 +115,7 @@ const deleteBook = asyncHandler (async(req, res) => {
 module.exports = {
     getBooks,
     getBookUser,
+    getUsersBooks,
     getOneBook,
     createBook,
     updateBook,
