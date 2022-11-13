@@ -128,9 +128,6 @@ const generateToken = (id) => {
 }
 
 
-
-
-
 const loginController = async(req, res) => {
     if(req.body.googleAccessToken){//oauth
         axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {

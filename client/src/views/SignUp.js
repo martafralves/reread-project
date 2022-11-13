@@ -1,26 +1,30 @@
 import {Form} from 'react-bootstrap';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBInput, MDBRow, MDBTypography } from 'mdb-react-ui-kit';
-import { useState, useEffect } from 'react';
-import {useForm} from 'react-hook-form';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, reset } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import {registerSchema} from '../schemas/index';
+import {useFormik} from 'formik'
 import registration from '../images/registration.avif';
 import Spinner from '../components/Spinner';
-
+import '../styles/login-form.css'
 // form template modified from this open source form: https://mdbootstrap.com/docs/react/extended/bootstrap-address-form/#address-form-image
 
 function SignUp() {
 
-  const [formData, setFormData] = useState({
+  const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
+    initialValues: {
     name: '',
     email: '',
     username: '',
     password: '',
     cpassword: ''
-  })
-  const {name, email, username, password, cpassword} = formData
+  },
+  validationSchema: registerSchema,
+  onSubmit,
+})
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -29,8 +33,6 @@ function SignUp() {
     (state) => state.auth
   )
   
-
-  const {register, handleSubmit, formState: {errors}} = useForm()
 
   useEffect(() => {
    if(isError){
@@ -44,29 +46,10 @@ function SignUp() {
    dispatch(reset())
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }))
+  function onSubmit(values){
+    dispatch(registerUser(values))
   }
 
-  function onSubmit(e){
-    e.preventDefault()
-    
-    if(password !== cpassword){
-      toast.error('Passwords do not match')
-    } else {
-      const userData = {
-        name,
-        email,
-        username,
-        password,
-      }
-    
-    dispatch(registerUser(userData))
-  }
-}
 
   if(isLoading){
     return <Spinner/>
@@ -74,7 +57,7 @@ function SignUp() {
 
   return (
     <MDBContainer className="py-5" style={{ maxWidth: '900px' }}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit}>
     <MDBRow className="justify-content-center align-items-center">
       <MDBCol>
         <MDBCard className="my-4 shadow-3">
@@ -89,32 +72,34 @@ function SignUp() {
                 <MDBTypography tag="h3" className="mb-4 text-uppercase">Sign Up</MDBTypography>
                 <MDBRow>
                   <MDBCol md="6" className="mb-4">
-                    <MDBInput id = 'name' name='name' label='Name' type='text' size="lg" value = {name} 
-                    {...register('name', {required: true})} onChange={onChange}/>
-                    {errors.name?.type==='required' && (<p className="errorMsg">Name is required.</p>)}
+                    <MDBInput id = 'name' name='name' label='Name' type='text' size="lg" value = {values.name} 
+                    className={errors.name && touched.name ? "input-error" : ""}
+                    onChange={handleChange} onBlur={handleBlur}/>
+                    {errors.name && touched.name && <p className="error">{errors.name}</p>}
                   </MDBCol>
                   <MDBCol md="6" className="mb-4">
-                    <MDBInput id='username' name='username' label='Username' type='text' size="lg"value = {username} 
-                    {...register('username', {required: true})} onChange={onChange} />
-                    {errors.username?.type==='required' && (<p className="errorMsg">Username is required.</p>)}
+                    <MDBInput id='username' name='username' label='Username' type='text' size="lg" value = {values.username}
+                    className={errors.username && touched.username ? "input-error" : ""}
+                    onChange={handleChange} onBlur={handleBlur} 
+                   />
+                   {errors.username && touched.username && <p className="error">{errors.username}</p>}
                   </MDBCol>
                 </MDBRow>
-                <MDBInput id='email' name='email' label='Email' type='email' className="mb-4" size="lg" value = {email}
-                {...register('email', {required: true, pattern:/^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/})} onChange={onChange}/>
-                {errors.email?.type==='required' && (
-                  <p className="errorMsg">Email is required.</p>)}
-                {errors.email?.type==='pattern' && 'Please enter a valid email'}
-                <MDBInput id='password' name='password' label='Password' type='password' className="mb-4" size="lg" value = {password} 
-                {...register('password', {required: true, minLength:8})} onChange={onChange}/>
-                {errors.password?.type==='required' && (
-                  <p className="errorMsg">Password is required.</p>)}
-                {errors.password?.type==='minLength' && (<p className="errorMsg">Your password should be more than 8 characters.</p>)}
-                <MDBInput id='cpassword' name='cpassword' label='Confirm password' type='password' className="mb-4" size="lg" value = {cpassword}
-                {...register('cpassword', {required: true, minLength:8})} onChange={onChange}/>
-                {errors.cpassword?.type==='required' && (
-                  <p className="errorMsg">Confirm your password.</p>)}
+                <MDBInput id='email' name='email' label='Email' type='email' className={errors.email && touched.email ? "input-error mb-4" : "mb-4"} size="lg" value={values.email}
+                onChange={handleChange} onBlur={handleBlur}
+                />
+                {errors.email && touched.email && <p className="error">{errors.email}</p>}
+                <MDBInput id='password' name='password' label='Password' type='password' 
+                className={errors.password && touched.password ? "input-error mb-4" : "mb-4"} size="lg" 
+                value = {values.password} onChange={handleChange} onBlur={handleBlur}
+                />
+                {errors.password && touched.password && (<p className="error">{errors.password}</p>)}
+                <MDBInput id='cpassword' name='cpassword' label='Confirm password' type='password' 
+                className={errors.cpassword && touched.cpassword ? "input-error mb-4" : "mb-4"} size="lg" 
+                value = {values.cpassword} onChange={handleChange} onBlur={handleBlur}/>
+                {errors.cpassword && touched.cpassword && (<p className="error">{errors.cpassword}</p>)}
                 <div className="d-flex justify-content-end pt-3">
-                  <MDBBtn onClick={onSubmit} type='submit' size="lg" className="ms-2" style={{backgroundColor: 'hsl(210, 100%, 50%)'}}>Register</MDBBtn>
+                  <MDBBtn onClick={handleSubmit} type='submit' size="lg" className="ms-2" style={{backgroundColor: 'hsl(210, 100%, 50%)'}}>Register</MDBBtn>
                 </div>
                 <div className="d-flex justify-content-end pt-3"><span>Already have an account?<a href='/login'> Login</a></span></div>
               </MDBCardBody>
