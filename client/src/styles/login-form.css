@@ -1,40 +1,11 @@
-.login-form-container{
-    width: 400px;
-    position: relative;
-    justify-self: center;
-    margin: auto;
-    margin-top: 100px;
-    padding: 20px 20px;
-    border-radius: 5%;
-    background-color: #D6E4E5;
-}
+.error {
+    color: #fc8181;
+    font-size: 0.75rem;
+    text-align: left;
+    margin-top: 0.25rem;
+  }
 
-.login-form-title{
-    text-align: center;
-}
-
-.login-label{
-    font-weight: bold;
-}
-
-.login-form-span{
-    float: right;
-}
-
-.google-button{
-    padding: 15px;
-    width: 100%;
-    border: 0px none;
-}
-
-.signup-form-container{
-    width: 400px;
-    position: relative;
-    justify-self: center;
-    margin: auto;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    border-radius: 5%;
-    background-color: #D6E4E5;
+  input.input-error,
+select.input-error {
+  border-color: #fc8181;
 }
