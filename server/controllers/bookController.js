@@ -1,6 +1,7 @@
 const Book = require('../models/books.model');
 const User = require('../models/users.model');
 const asyncHandler = require ('express-async-handler');
+const { default: mongoose } = require('mongoose');
 
 
 //GET all books
@@ -37,12 +38,19 @@ const getUsersBooks = asyncHandler (async (req, res) => {
 
 //GET one book by id
 const getOneBook = asyncHandler( async(req, res) => {
-    const book = await Book.findById(req.params.id)
-    if(!book){
-        res.status(400)
-        throw new Error('Book not found')
-    }
-    res.status(200).json(book)
+    const { id, title, author, price, language, condition, status, delivery, description } = await Book.findById(req.params.id)
+
+    res.status(200).json({
+        _id: id,
+        title,
+        author,
+        price,
+        language,
+        condition,
+        status,
+        delivery, 
+        description
+    })
 })
 
 //create a book

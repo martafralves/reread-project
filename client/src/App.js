@@ -10,6 +10,7 @@ import Login from "./views/Login";
 import SignUp from "./views/SignUp";
 import Profile from "./views/Profile";
 import AddBook from "./views/AddBook";
+import EditBook from "./views/EditBook";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/signup" element={<SignUp/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/addbook" element={<AddBook/>}/>
+          <Route path="/editbook/:id" element={<EditBook/>}/>
           </Routes>
       </Router>
       <ToastContainer/>

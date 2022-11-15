@@ -25,7 +25,10 @@ function NavigBar(){
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            {user ? (<Button className='btn' onClick={onLogout}><FaSignOutAlt /> Logout</Button>) : 
+            {user ? (<>
+            <Nav.Link as={Link} to="/profile">My Profile</Nav.Link>
+            <Nav.Link as={Link} to="/addbook">Sell Book</Nav.Link>
+            <Button className='btn' onClick={onLogout}><FaSignOutAlt /> Logout</Button></>) : 
             (<>
               <Nav.Link as={Link} to="/signup" ><FaRegUser /> Register</Nav.Link>
               <Nav.Link as={Link} to="/login" ><FaSignInAlt /> Login</Nav.Link>
