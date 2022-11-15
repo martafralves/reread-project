@@ -1,23 +1,26 @@
 import {useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import Form from 'react-bootstrap/Form';
 import {useFormik} from 'formik'
 import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 import {addbookSchema} from '../schemas/index';
-import {createBook, reset} from '../features/books/bookSlice'
+import {updateBook, getSingleBook, reset} from '../features/books/bookSlice'
 import { MDBRow, MDBCol, MDBInput,MDBBtn } from 'mdb-react-ui-kit';
 import '../styles/login-form.css'
 
 
-function AddBook() {
+function EditBook() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+   
+
     const {user} = useSelector((state) => state.auth)
-    const {isLoading, isError, isSuccess, message} = useSelector((state) =>state.books)
+    const {book, isLoading, isError, isSuccess, message} = useSelector((state) =>state.books)
+
 
     const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues: {
@@ -42,15 +45,15 @@ function AddBook() {
             toast.error(message)
            }
         
-        if(isSuccess){
-            navigate('/profile')
-           } 
-        
-           dispatch(reset())
-    }, [user, isError, isSuccess, navigate, dispatch, message])
+        dispatch(getSingleBook(book))
+
+        if(book){
+            values = {...book}
+        }
+    }, [book, user, isError, isSuccess, navigate, dispatch, message])
 
     function onSubmit(values){
-        dispatch(createBook(values))
+        dispatch(updateBook(values))
     }
 
     if(isLoading){
@@ -59,7 +62,7 @@ function AddBook() {
     
   return (
     <div className='container bookform-container m-4 pt-2'>
-        <h2 className='bookform-title'>Book information</h2>
+        <h2 className='bookform-title'>Edit book information</h2>
         <p>Please provide information on the book you are selling</p>
     <Form onSubmit={handleSubmit}>
       <MDBRow className='mb-4'>
@@ -123,11 +126,11 @@ function AddBook() {
        onChange={handleChange} onBlur={handleBlur}/>
        {errors.description && touched.description && <p className="error">{errors.description}</p>}
       <MDBBtn onClick={handleSubmit} className='mb-4' type='submit' block>
-        Post book
+        Update book
       </MDBBtn>
     </Form>
     </div>
   )
 }
 
-export default AddBook
+export default EditBook
