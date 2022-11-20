@@ -6,32 +6,33 @@ import {useFormik} from 'formik'
 import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 import {addbookSchema} from '../schemas/index';
-import {updateBook, getSingleBook, reset} from '../features/books/bookSlice'
+import {updateBook, getBook} from '../features/books/bookSlice'
 import { MDBRow, MDBCol, MDBInput,MDBBtn } from 'mdb-react-ui-kit';
 import '../styles/login-form.css'
 
 
 function EditBook() {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
-
-   
+    const navigate = useNavigate()
+    const {id} = useParams()
+    
 
     const {user} = useSelector((state) => state.auth)
-    const {book, isLoading, isError, isSuccess, message} = useSelector((state) =>state.books)
+    const {book, isLoading, isSuccess, isError, message} = useSelector((state) => state.books)
 
 
     const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
+        enableReinitialize: true,
         initialValues: {
-        title: '',
-        author: '',
-        price: '',
-        language: '',
-        condition: '',
-        status: '',
-        delivery: '',
-        description: ''
+        title: book?.title ||'',
+        author: book?.author ||'',
+        price: book?.price['$numberDecimal'].toLocaleString() || '',
+        language: book?.language ||'',
+        condition: book?.condition ||'',
+        status: book?.status ||'',
+        delivery: book?.delivery || '',
+        description: book?.description || ''
       },
       validationSchema: addbookSchema,
       onSubmit,
@@ -41,16 +42,13 @@ function EditBook() {
         if(!user) {
             navigate('/login')
         }
-        if(isError){
-            toast.error(message)
-           }
-        
-        dispatch(getSingleBook(book))
 
-        if(book){
-            values = {...book}
-        }
-    }, [book, user, isError, isSuccess, navigate, dispatch, message])
+        if(isError){
+          toast.error(message)
+      }
+
+      dispatch(getBook(id))
+    }, [values, id, user, isError, isSuccess, navigate, dispatch, message])
 
     function onSubmit(values){
         dispatch(updateBook(values))
@@ -63,7 +61,7 @@ function EditBook() {
   return (
     <div className='container bookform-container m-4 pt-2'>
         <h2 className='bookform-title'>Edit book information</h2>
-        <p>Please provide information on the book you are selling</p>
+        <p>Please update your book's information</p>
     <Form onSubmit={handleSubmit}>
       <MDBRow className='mb-4'>
         <MDBCol>
