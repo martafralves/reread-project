@@ -6,6 +6,7 @@ const book = JSON.parse(localStorage.getItem('book'))
 
 const initialState = {
     books: [],
+    book: {},
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -43,9 +44,10 @@ export const deleteBook = createAsyncThunk('books/delete', async(id, thunkAPI) =
 }) 
 
 //update user book
-export const updateBook = createAsyncThunk('books/update', async(id, thunkAPI) =>{
+export const updateBook = createAsyncThunk('books/update', async(bookData, thunkAPI) =>{
     try{
         const token = thunkAPI.getState().auth.user.token
+        const {id, title, author, description, price, delivery, language, status, condition} = bookData
         return await bookService.updateBook(id, token)
     }catch(error){
         const message =
@@ -73,10 +75,10 @@ export const getBooks = createAsyncThunk('books/getAll', async(_, thunkAPI) => {
 })
 
 //get A single book
-export const getSingleBook = createAsyncThunk('books/getOne', async(id, thunkAPI) => {
+export const getBook = createAsyncThunk('books/getOne', async(bookId, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token 
-        return await bookService.getSingleBook(id, token)
+        return await bookService.getBook(bookId, token)
     }catch(error){
         const message =
             (error.response &&
@@ -138,24 +140,25 @@ export const bookSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(updateBook.fulfilled, (state, action) => {
+                const updatedBook = state.books.map((book) => book._id === action.payload._id ? action.payload : book)
                 state.isLoading = false
                 state.isSuccess = true
-                state.books.push(action.payload)
+                state.books = updatedBook
             })
             .addCase(updateBook.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message=action.payload
             })
-            .addCase(getSingleBook.pending, (state) =>{
+            .addCase(getBook.pending, (state) =>{
                 state.isLoading = true
             })
-            .addCase(getSingleBook.fulfilled, (state, action) => {
+            .addCase(getBook.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.books = action.payload
+                state.book = action.payload
             })
-            .addCase(getSingleBook.rejected, (state, action) => {
+            .addCase(getBook.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message=action.payload

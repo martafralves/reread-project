@@ -21,10 +21,10 @@ async function dbconnect(){
 }
 dbconnect();
 
-var corsOptions = {
+/*var corsOptions = {
     origin: "http://localhost:3000"
-  };
-app.use(cors(corsOptions));
+  };*/
+app.use(require('cors')()); //enable cors
 
 //parse requests of content type - app/json
 app.use(bodyParser.json());

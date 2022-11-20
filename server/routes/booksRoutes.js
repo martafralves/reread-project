@@ -8,6 +8,6 @@ const router = express.Router()
 router.route('/').get(getBooks).post(protect, createBook)
 router.route('/user').get(protect, getBookUser)
 router.route('/find/:id').get(getUsersBooks)
-router.route('/:id').get(getOneBook).delete(protect, deleteBook).put(protect, updateBook)
+router.route('/:id').get(protect, getOneBook).delete(protect, deleteBook).put(protect, updateBook)
 
 module.exports = router;

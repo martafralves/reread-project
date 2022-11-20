@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-const API_URL = 'api/books/'
-const API_URL_PRO = 'api/books/user/'
+const API_URL = '/api/books/'
+const API_URL_PRO = '/api/books/user/'
+
 
 //create new book
 const createBook = async(bookData, token) => {
@@ -52,7 +53,7 @@ const updateBook = async(bookId, token) => {
 }
 
 //get one book
-const getSingleBook = async(bookId, token) => {
+const getBook = async(bookId, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -67,7 +68,7 @@ const bookService = {
     getBooks,
     deleteBook,
     updateBook,
-    getSingleBook
+    getBook
 }
 
 export default bookService
