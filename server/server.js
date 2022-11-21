@@ -46,6 +46,12 @@ app.use("/api/users", usersRouter)
 const booksRouter = require("./routes/booksRoutes")
 app.use("/api/books", booksRouter)
 
+const conversationRouter = require("./routes/conversationRoutes")
+app.use("/api/conversation", conversationRouter)
+
+const messageRouter = require("./routes/messageRoutes")
+app.use("/api/message", messageRouter)
+
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

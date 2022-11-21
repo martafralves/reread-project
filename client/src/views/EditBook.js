@@ -27,7 +27,7 @@ function EditBook() {
         initialValues: {
         title: book?.title ||'',
         author: book?.author ||'',
-        price: book?.price['$numberDecimal'].toLocaleString() || '',
+        price: book?.price['$numberDecimal'].toLocaleString()|| '',
         language: book?.language ||'',
         condition: book?.condition ||'',
         status: book?.status ||'',
@@ -35,6 +35,8 @@ function EditBook() {
         description: book?.description || ''
       },
       validationSchema: addbookSchema,
+      validateOnChange: false,
+      validateOnBlur: false,
       onSubmit,
     })
 

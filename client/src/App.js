@@ -13,6 +13,8 @@ import AddBook from "./views/AddBook";
 import EditBook from "./views/EditBook";
 import BookProfile from "./views/BookProfile";
 import Search from "./views/Search";
+import EditProfile from './views/EditProfile'
+import Messenger from "./views/messenger/Messenger";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/editbook/:id" element={<EditBook/>}/>
           <Route path="/book/:id" element={<BookProfile/>}/>
           <Route path="/search" element={<Search/>}/>
+          <Route path="/editprofile/:id" element={<EditProfile/>}/>
+          <Route path="/messenger" element={<Messenger/>}/>
           </Routes>
       </Router>
       <ToastContainer/>
