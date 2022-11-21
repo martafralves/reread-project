@@ -41,14 +41,14 @@ const deleteBook = async(bookId, token) => {
 }
 
 //udpate book
-const updateBook = async(bookId, token) => {
+const updateBook = async(bookId, token, updatedBook) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
 
-    const response = await axios.put(API_URL + bookId, config)
+    const response = await axios.put(API_URL + bookId, config, updatedBook)
     return response.data
 }
 

@@ -22,10 +22,6 @@ const usersSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
-    roles: [{
-        type: String,
-        default: "Seller"
-    }],
     about: {
         type: String,
         required: false
@@ -33,10 +29,6 @@ const usersSchema = new mongoose.Schema({
     payment: {
         type: String,
         required: false
-    },
-    active: {
-        type: Boolean,
-        default: true
     },
     books: {
         type: mongoose.Schema.Types.ObjectId,

@@ -34,9 +34,10 @@ function Profile() {
         <div className="jumbotron jumbotron-fluid">
             <div className="container mt-2">
                 <h1 className="display-4 profile-user"><strong>{user.username}</strong> Profile</h1>
+                <Button onClick={() => navigate(`/editprofile/${user.id}`)}>Update Profile</Button>
              <div className='row btn-row m-4'>
                 <div className='col-4'>
-                    <Button>Sell Book</Button>
+                    <Button onClick={() => navigate('/addbook')}>Sell Book</Button>
                 </div>
                 <div className='col-4'>
                     <Button>Message Box</Button>
