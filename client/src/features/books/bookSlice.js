@@ -60,7 +60,7 @@ export const updateBook = createAsyncThunk('books/update', async(bookData, thunk
 }) 
 
 //get users books
-export const getBooks = createAsyncThunk('books/getAll', async(_, thunkAPI) => {
+export const getBooks = createAsyncThunk('books/getAllUser', async(_, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token 
         return await bookService.getBooks(token)
@@ -73,6 +73,21 @@ export const getBooks = createAsyncThunk('books/getAll', async(_, thunkAPI) => {
             return thunkAPI.rejectWithValue(message)
     }
 })
+
+//get ALL books in db
+export const getAllBooks = createAsyncThunk('books/getAllBooks', async(_, thunkAPI) => {
+    try{
+        return await bookService.getAllBooks()
+    }catch(error){
+        const message =
+            (error.response &&
+                error.response.data &&
+                 error.response.data.message) ||
+                error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+    }
+})
+
 
 //get A single book
 export const getBook = createAsyncThunk('books/getOne', async(bookId, thunkAPI) => {
@@ -159,6 +174,19 @@ export const bookSlice = createSlice({
                 state.book = action.payload
             })
             .addCase(getBook.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message=action.payload
+            })
+            .addCase(getAllBooks.pending, (state) =>{
+                state.isLoading = true
+            })
+            .addCase(getAllBooks.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.books = action.payload
+            })
+            .addCase(getAllBooks.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message=action.payload

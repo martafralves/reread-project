@@ -30,7 +30,8 @@ function Messenger() {
     }, [])
 
     useEffect(() => {
-        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
+        arrivalMessage && 
+            currentChat?.members.includes(arrivalMessage.sender) &&
         setMessages((prev)=>[...prev, arrivalMessage])
     }, [arrivalMessage, currentChat])
 
@@ -48,6 +49,7 @@ function Messenger() {
         getConversations()
     }, [user])
 
+
     useEffect(() => {
         const getMessages = async () => {
             try{
@@ -60,6 +62,7 @@ function Messenger() {
         getMessages();
     }, [currentChat])
 
+    
     useEffect(() => {
         scrollRef.current?.scrollIntoView({behavior: 'smooth'})
     }, [messages])
