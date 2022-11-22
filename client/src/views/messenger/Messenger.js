@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux'
 import { toast } from 'react-toastify';
+import {io} from 'socket.io-client'
 import '../../styles/messenger.css'
 
 function Messenger() {
@@ -11,8 +12,29 @@ function Messenger() {
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('')
-    const scrollRef = useRef()
+    const [arrivalMessage, setArrivalMessage] = useState(null)
+    const socket = useRef();
+    const scrollRef = useRef();
+
     const {user} = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        socket.current = io('ws://localhost:8900');
+        socket.current.on('getMessage', (data) => {
+            setArrivalMessage({
+                sender: data.senderId,
+                text: data.text,
+                createdAt: Date.now()
+            })
+        })
+    }, [])
+
+    useEffect(() => {
+        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
+        setMessages((prev)=>[...prev, arrivalMessage])
+    }, [arrivalMessage, currentChat])
+
+
 
     useEffect(() => {
         const getConversations = async() => {
@@ -50,6 +72,13 @@ function Messenger() {
             text: newMessage,
             conversationId: currentChat._id
         }
+
+        const receiverId = currentChat.members.find(member=> member !== user.id)
+        socket.current.emit('sendMessage', {
+            senderId: user.id,
+            receiverId,
+            text: newMessage
+        })
 
         try{
             const response = await axios.post('/api/message', message)
