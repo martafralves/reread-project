@@ -1,12 +1,13 @@
+import {format} from 'timeago.js'
 import '../../styles/messenger.css'
 
-function Message({own}) {
+function Message({message, own}) {
   return (
     <div className={own ? 'message own' : 'message'}>
         <div className='message-top'></div>
-            <p className='msg-text'>Hello this is a message</p>
+            <p className='msg-text'>{message.text}</p>
         <div className='message-bottom'>
-            1 hour ago
+            {format(message.createdAt)}
         </div>
       
     </div>
