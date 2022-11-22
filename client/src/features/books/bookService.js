@@ -16,7 +16,13 @@ const createBook = async(bookData, token) => {
     return response.data
 }
 
-//get books
+//get all books
+const getAllBooks = async() => {
+    const response = await axios.get(API_URL)
+    return response.data
+}
+
+//get books from logged in user
 const getBooks = async(token) => {
     const config = {
         headers: {
@@ -68,7 +74,8 @@ const bookService = {
     getBooks,
     deleteBook,
     updateBook,
-    getBook
+    getBook,
+    getAllBooks
 }
 
 export default bookService

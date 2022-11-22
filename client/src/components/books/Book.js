@@ -1,28 +1,22 @@
-import { useEffect } from 'react'
-import {toast} from 'react-toastify'
-import {useSelector, useDispatch} from 'react-redux'
-import {getBook, reset} from '../../features/books/bookSlice'
-import { useParams } from 'react-router-dom'
-import Spinner from '../Spinner'
+import {Col, Card, Button} from 'react-bootstrap'
 
-function Book() {
-    const {book, isLoading, isSuccess, isError, message} = useSelector((state) => state.books)
-    
-    const dispatch = useDispatch()
-    const {bookId} = useParams()
-
-    console.log(bookId)
-
-    useEffect(() => {
-        if(isError){
-            toast.error(message)
-        }
-
-        dispatch(getBook(bookId))
-        console.log(getBook(bookId))
-    }, [isError, message, bookId])
+function Book({book}) {
+   
   return (
-    <div>Book</div>
+    <Col xs={12} md={6} lg={4} key={book.id}>
+    <Card style={{ width: '18rem' }}>
+      <Card.Header></Card.Header>
+      <Card.Img variant="top" src='' />
+      <Card.Body>
+        <Card.Title>{book.title}</Card.Title>
+        <Card.Text>
+          {book.author}
+        </Card.Text>
+        <Card.Text><small>Price: {book.price['$numberDecimal'].toLocaleString()} €</small></Card.Text>
+        <Button variant="primary">View</Button>
+      </Card.Body>
+    </Card>
+  </Col>
   )
 }
 
