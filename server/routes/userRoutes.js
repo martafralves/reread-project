@@ -10,6 +10,6 @@ router.post('/login', loginUser)
 router.get('/me', protect, getUserData)
 
 router.route('/').get(getUsers)
-router.route('/:id').delete(deleteUser).put(protect, updateUser)
+router.route('/:id').delete(deleteUser).put(protect, updateUser).get(getOneUser)
 
 module.exports = router;
