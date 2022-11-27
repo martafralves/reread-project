@@ -104,6 +104,20 @@ export const getBook = createAsyncThunk('books/getOne', async(bookId, thunkAPI) 
     }
 })
 
+//get books by query
+export const searchBooks = createAsyncThunk('books/search', async(query, thunkAPI) => {
+    try{
+        return await bookService.searchBooks(query)
+    }catch(error){
+        const message =
+            (error.response &&
+                error.response.data &&
+                 error.response.data.message) ||
+                error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const bookSlice = createSlice({
     name: 'book',
     initialState,
@@ -187,6 +201,19 @@ export const bookSlice = createSlice({
                 state.books = action.payload
             })
             .addCase(getAllBooks.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message=action.payload
+            })
+            .addCase(searchBooks.pending, (state) =>{
+                state.isLoading = true
+            })
+            .addCase(searchBooks.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.book = action.payload
+            })
+            .addCase(searchBooks.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message=action.payload

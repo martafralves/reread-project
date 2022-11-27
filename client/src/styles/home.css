@@ -1,0 +1,20 @@
+.home-container{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    justify-content: center;
+    text-align: center;
+}
+.home-img-container{
+    height: auto;
+    width: 100%;
+}
+
+.home-header{
+    padding: 10px;
+}
+
+.home-img{
+    height: 350px;
+    width: 100%;
+}

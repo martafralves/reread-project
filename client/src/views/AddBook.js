@@ -43,6 +43,7 @@ function AddBook() {
            }
         
         if(isSuccess){
+            toast.success('Book added successfully!')
             navigate('/profile')
            } 
         

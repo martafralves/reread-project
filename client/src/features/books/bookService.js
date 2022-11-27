@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const API_URL = '/api/books/'
 const API_URL_PRO = '/api/books/user/'
+const API_URL_SEARCH = '/api/books/search?q='
 
 
 //create new book
@@ -69,13 +70,21 @@ const getBook = async(bookId, token) => {
     const response = await axios.get(API_URL + bookId, config)
     return response.data
 }
+
+//get one book
+const searchBooks = async(query) => {
+
+    const response = await axios.get(API_URL_SEARCH + query)
+    return response.data
+}
 const bookService = {
     createBook,
     getBooks,
     deleteBook,
     updateBook,
     getBook,
-    getAllBooks
+    getAllBooks,
+    searchBooks
 }
 
 export default bookService
