@@ -122,16 +122,18 @@ const deleteBook = asyncHandler (async(req, res) => {
 
     //get books by search
     const getBooksBySearch = asyncHandler(async(req, res) => {
-        const {searchQuery} = req.query;
+        const {q} = req.query;
 
-        try{
-            const title = new RegExp(searchQuery, 'i')
-            const books = await Book.find({title})
+            const books = await Book.find({$or: [
+                {title: {$regex: `${q}`, $options:'i'}},
+                {author: {$regex: `${q}`, $options:'i'}},
+                {language: {$regex: `${q}`, $options:'i'}}
+            ]
+        })
+
+            if(books.length<1) throw new Error ('No books found')
+            
             res.status(200).json(books)
-        }catch(error){
-            res.status(404)
-            throw new Error ('Could not find the book you are looking for')
-        }
     })
 
 module.exports = {

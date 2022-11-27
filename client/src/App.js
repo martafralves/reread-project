@@ -15,6 +15,7 @@ import BookProfile from "./views/BookProfile";
 import Search from "./views/Search";
 import EditProfile from './views/EditProfile'
 import Messenger from "./views/messenger/Messenger";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/editprofile/:id" element={<EditProfile/>}/>
           <Route path="/messenger" element={<Messenger/>}/>
           </Routes>
+          <Footer/>
       </Router>
       <ToastContainer/>
     </div>
