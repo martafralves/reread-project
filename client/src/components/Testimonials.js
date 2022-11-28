@@ -2,7 +2,7 @@ import { MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
 import tony from '../images/tony.avif'
 import anabelle from '../images/anabelle.avif'
 
-function Testimonials(){
+function Testimonials(){ //template open source from MDB Bootstrap
     return(
         <MDBContainer className="py-5">
       <MDBRow className="d-flex justify-content-center">
@@ -25,8 +25,8 @@ function Testimonials(){
             />
           </div>
           <p className="lead my-3 text-muted">
-            "Lorem ipsum dolor sit amet eos adipisci, consectetur adipisicing
-            elit sed ut perspiciatis unde omnis."
+            "ReRead has become my first go-to when I am looking for a book with good value.
+            And I have also added to my income by selling my own books"
           </p>
           <p className="font-italic font-weight-normal mb-0">- Anabelle Cullen</p>
         </MDBCol>
@@ -41,8 +41,8 @@ function Testimonials(){
             />
           </div>
           <p className="lead my-3 text-muted">
-            "Neque cupiditate assumenda in maiores repudiandae mollitia
-            architecto elit sed adipiscing elit."
+            "I have been able to save a signifficant amount of money
+            since I started buying used books through Reread. Recommend 100%"
           </p>
           <p className="font-italic font-weight-normal mb-0">- Tony Reeves</p>
         </MDBCol>

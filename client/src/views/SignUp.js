@@ -56,6 +56,7 @@ function SignUp() {
   }
 
   return (
+    <div className='register-wrapper'>
     <MDBContainer className="py-5" style={{ maxWidth: '900px' }}>
       <Form onSubmit={handleSubmit}>
     <MDBRow className="justify-content-center align-items-center">
@@ -110,7 +111,7 @@ function SignUp() {
     </MDBRow>
     </Form>
   </MDBContainer>
-    
+  </div>
   )
 }
 

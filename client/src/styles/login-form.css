@@ -9,3 +9,16 @@
 select.input-error {
   border-color: #fc8181;
 }
+
+.login-container{
+  background-color: #E1FFB1;
+  padding-bottom: 30px;
+}
+
+.login-form{
+  margin-bottom: 20px;
+}
+
+.register-wrapper{
+  background-color: #E1FFB1;
+}
