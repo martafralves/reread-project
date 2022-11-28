@@ -64,8 +64,8 @@ if(isLoading){
 }
 
   return (
-    <MDBContainer fluid>
-      <Form onSubmit={handleSubmit}>
+    <MDBContainer fluid className='login-container'>
+      <Form className='login-form' onSubmit={handleSubmit}>
       <MDBRow className='d-flex justify-content-center align-items-center h-100'>
         <MDBCol col='12'>
 
