@@ -1,0 +1,63 @@
+.search-container{
+    text-align: center;
+    padding-top: 20px;
+   background-color: #E1FFB1;
+   
+}
+
+.search-header{
+    margin: 10px 0;
+}
+
+.search-bar{
+    border: 1px solid;
+    border-radius: 5px;
+    width: 40%;
+    height: 40px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-btn{
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    width: 40px;
+    background-color: #413F42;
+}
+
+.search-btn>svg{
+    color: #FFBF00 !important;
+}
+
+.card-col{
+   margin-top: 30px;
+   margin-bottom: 80px;
+}
+
+.card-custom {
+    min-width: 80%;
+    margin: 0 50px;
+    text-align: center;
+    justify-items: center;
+    justify-content: center;
+    overflow:hidden;
+}
+
+.card-img{
+    height: 200px;
+    width: 90%;
+    justify-self: center;
+    margin: auto;
+}
+
+.btn-book{
+    background-color: #FFBF00;
+    color: #413F42;
+}
+
+.btn-book:hover{
+    background-color: #98dc2c;
+    color: #413F42;
+}
+
