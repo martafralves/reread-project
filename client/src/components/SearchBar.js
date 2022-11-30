@@ -1,5 +1,6 @@
 import Book from "./books/Book"
 import {useEffect, useState} from 'react';
+import { MDBRow } from "mdb-react-ui-kit";
 import {useSelector, useDispatch} from 'react-redux'
 import { getAllBooks} from '../features/books/bookSlice';
 import Spinner from '../components/Spinner'
@@ -58,10 +59,11 @@ function SearchBar() {
     return (
     <div className='search-container'>
         <form onSubmit={handleSubmit}>
-        <input type= 'text' placeholder= 'Search for a book' className='search' value={query}  onChange={onChange}/>
-        <button type='submit'><FaSearch/></button> 
+        <input className='search-bar' type= 'text' placeholder= 'Search for a book' value={query}  onChange={onChange}/>
+        <button className='search-btn' type='submit'><FaSearch/></button> 
         </form>
         <div className='book-container'>
+        <MDBRow className='row-cols-1 row-cols-md-4 g-4'>
         {Array.isArray(filteredBooks) ? (filteredBooks.map((book) => (
         <Book key={book._id} book={book}/>
         ))) : [] && 
@@ -69,6 +71,7 @@ function SearchBar() {
             <h3>Sorry, couldn't find any books for your search.</h3>
             <p>Please try a different book or come back later!</p>
         </div>}
+        </MDBRow>
         </div>
     </div>
   )
