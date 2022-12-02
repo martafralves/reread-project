@@ -13,7 +13,12 @@ color:#98dc2c;
     color: #98dc2c!important;
 }
 
-
+.logout-btn{
+    margin-left: 5px;
+    height: 40px;
+    background-color: #E1FFB1 !important;
+    color: #413F42 !important;
+}
 
 svg {
     color: #98dc2c !important;

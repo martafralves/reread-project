@@ -38,7 +38,7 @@ function NavigBar(){
             {user ? (<>
             <Nav.Link as={Link} to="/profile" className='navbar-custom-link'>My Profile</Nav.Link>
             <Nav.Link as={Link} to="/addbook" className='navbar-custom-link'>Sell Book</Nav.Link>
-            <Button className='btn' onClick={onLogout}><FaSignOutAlt /> Logout</Button></>) : 
+            <Button className='logout-btn' onClick={onLogout}><FaSignOutAlt /> Logout</Button></>) : 
             (<>
               <Nav.Link as={Link} to="/signup" className='navbar-custom-link' ><FaRegUser /> Register</Nav.Link>
               <Nav.Link as={Link} to="/login" className='navbar-custom-link' ><FaSignInAlt /> Login</Nav.Link>

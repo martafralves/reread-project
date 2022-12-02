@@ -1,0 +1,28 @@
+/*ADD BOOK FORM*/
+
+.bookform-wrapper{
+    margin: auto;
+    width: 50%;
+}
+
+.bookform-title{
+    color: #98dc2c;
+}
+
+.add-btn{
+    margin-bottom: 50px;
+    background-color: #FFBF00 !important;
+    color: #413F42 !important;
+}
+
+/*UPDATE PROFILE*/
+
+.editprofile-title{
+    margin-bottom: 20px;
+    color:#98dc2c
+}
+
+.updateprofile-btn{
+    background-color: #FFBF00 !important;
+    color: #413F42 !important;
+}

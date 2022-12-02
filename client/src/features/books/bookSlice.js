@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import bookService from './bookService'
 
 // Get books from localStorage
-const book = JSON.parse(localStorage.getItem('book'))
+//const book = JSON.parse(localStorage.getItem('book'))
 
 const initialState = {
     books: [],
