@@ -15,8 +15,8 @@ function BookItem({book}){
             </div>
             <div>
                 <p>{book.price['$numberDecimal'].toLocaleString()} €</p>
-                <button onClick={() => dispatch(deleteBook(book._id))} className='delete-book'><RiDeleteBinLine/></button>
-                <button onClick={() => navigate(`/editbook/${book._id}`)}><RiEdit2Line/></button>
+                <button onClick={() => dispatch(deleteBook(book._id))} className='books-btn'><RiDeleteBinLine/></button>
+                <button onClick={() => navigate(`/editbook/${book._id}`)} className='books-btn'><RiEdit2Line/></button>
             </div>
         </div>
     )

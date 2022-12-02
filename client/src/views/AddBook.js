@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import {addbookSchema} from '../schemas/index';
 import {createBook, reset} from '../features/books/bookSlice'
 import { MDBRow, MDBCol, MDBInput,MDBBtn } from 'mdb-react-ui-kit';
-import '../styles/login-form.css'
+import '../styles/forms.css'
 
 
 function AddBook() {
@@ -44,7 +44,6 @@ function AddBook() {
         
         if(isSuccess){
             toast.success('Book added successfully!')
-            navigate('/profile')
            } 
         
            dispatch(reset())
@@ -59,10 +58,11 @@ function AddBook() {
       }
     
   return (
+    <div className='bookform-wrapper'>
     <div className='container bookform-container m-4 pt-2'>
         <h2 className='bookform-title'>Book information</h2>
         <p>Please provide information on the book you are selling</p>
-    <Form onSubmit={handleSubmit}>
+    <Form className='add-form' onSubmit={handleSubmit}>
       <MDBRow className='mb-4'>
         <MDBCol>
           <MDBInput id='title' label='Book Title' name='title' type = 'text' value = {values.title}
@@ -123,10 +123,11 @@ function AddBook() {
        className={errors.description && touched.description ? "input-error" : ""}
        onChange={handleChange} onBlur={handleBlur}/>
        {errors.description && touched.description && <p className="error">{errors.description}</p>}
-      <MDBBtn onClick={handleSubmit} className='mb-4' type='submit' block>
+      <MDBBtn onClick={handleSubmit} className='add-btn' type='submit' block>
         Post book
       </MDBBtn>
     </Form>
+    </div>
     </div>
   )
 }

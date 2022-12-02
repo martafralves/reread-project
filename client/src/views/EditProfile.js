@@ -53,8 +53,9 @@ function EditProfile() {
     }
 
   return (
+    <div className='bookform-wrapper'>
     <div className='container bookform-container m-4 pt-2'>
-        <h2 className='bookform-title'>Edit Profile information</h2>
+        <h2 className='editprofile-title'>Edit Profile information</h2>
     <Form onSubmit={handleSubmit}>
       <MDBRow className='mb-4'>
         <MDBCol>
@@ -86,10 +87,11 @@ function EditProfile() {
        className={errors.about && touched.about ? "input-error" : ""}
        onChange={handleChange} onBlur={handleBlur}/>
        {errors.about && touched.about && <p className="error">{errors.about}</p>}
-      <MDBBtn onClick={handleSubmit} className='mb-4' type='submit' block>
+      <MDBBtn onClick={handleSubmit} className='updateprofile-btn mb-4' type='submit' block>
         Update profile
       </MDBBtn>
     </Form>
+    </div>
     </div>
   )
 }

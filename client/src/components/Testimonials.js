@@ -18,7 +18,7 @@ function Testimonials(){ //template open source from MDB Bootstrap
           <div className="d-flex justify-content-center mb-4">
             <img
               src={anabelle}
-              class="rounded-circle shadow-1-strong"
+              className="rounded-circle shadow-1-strong"
               width="100"
               height="100"
               alt='Photo by Christopher Campbell on unsplash.com'
@@ -34,7 +34,7 @@ function Testimonials(){ //template open source from MDB Bootstrap
           <div className="d-flex justify-content-center mb-4">
             <img
               src= {tony}
-              class="rounded-circle shadow-1-strong"
+              className="rounded-circle shadow-1-strong"
               width="100"
               height="100"
               alt='Photo by Austin Wade on unsplash.com'
