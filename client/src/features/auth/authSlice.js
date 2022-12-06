@@ -55,11 +55,9 @@ async() => {
 })
 
 //update user information
-export const updateUser = createAsyncThunk('users/update', async(updatedUser, thunkAPI) =>{
+export const updateUser = createAsyncThunk('users/update', async(userId, updatedUser, thunkAPI) =>{
   try{
-      const token = thunkAPI.getState().auth.user.token
-      const {id, name, username, email, about, payment} = updatedUser
-      return await authService.updateUser(id, token, updatedUser)
+      return await authService.updateUser(userId, updatedUser)
   }catch(error){
       const message =
           (error.response &&
@@ -69,6 +67,20 @@ export const updateUser = createAsyncThunk('users/update', async(updatedUser, th
           return thunkAPI.rejectWithValue(message)
   }
 }) 
+
+//get user by id
+export const getaUser = createAsyncThunk('users/getaUser', async(userId, thunkAPI) => {
+  try{
+      return await userService.getaUser(userId)
+  }catch(error){
+      const message =
+          (error.response &&
+              error.response.data &&
+               error.response.data.message) ||
+              error.message || error.toString()
+          return thunkAPI.rejectWithValue(message)
+  }
+})
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -117,17 +129,31 @@ export const authSlice = createSlice({
           .addCase(updateUser.pending, (state) =>{
             state.isLoading = true
         })
-          .addCase(updateUser.fulfilled, (state, action) => {
-            const updatedUser = state.auth.map((user) => user._id === action.payload._id ? action.payload : user)
+          .addCase(updateUser.fulfilled, (state, action, {payload}) => {
+            const updatedUser = state.users.map((user) => user._id === action.payload._id ? action.payload : user)
             state.isLoading = false
             state.isSuccess = true
-            state.auth = updatedUser
+            state.users = updatedUser
+            localStorage.setItem('user', JSON.stringify(updatedUser));
         })
          .addCase(updateUser.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message=action.payload
         })
+        .addCase(getaUser.pending, (state) =>{
+          state.isLoading = true
+      })
+      .addCase(getaUser.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+          state.user = action.payload
+      })
+      .addCase(getaUser.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message=action.payload
+      })
     },
 })
 

@@ -51,7 +51,7 @@ function Profile() {
                     <h4>Books you are selling</h4>
                     {books.map((book) => (<BookItem key={book._id} book={book}/>))}
                 </div>
-            ) : (<h5>You have no books for sale</h5>) } 
+            ) : (<h5 className ='no-books'>You have no books for sale</h5>) } 
         </div>
     </div>
   )

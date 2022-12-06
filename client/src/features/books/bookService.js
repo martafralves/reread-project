@@ -3,6 +3,7 @@ import axios from 'axios'
 const API_URL = '/api/books/'
 const API_URL_PRO = '/api/books/user/'
 const API_URL_SEARCH = '/api/books/search?q='
+const API_URL_BOOK = '/api/books/search/'
 
 
 //create new book
@@ -71,7 +72,13 @@ const getBook = async(bookId, token) => {
     return response.data
 }
 
-//get one book
+//get one book without auth
+const getaBook = async(bookId) => {
+    const response = await axios.get(API_URL_BOOK + bookId)
+    return response.data
+}
+
+//Search book
 const searchBooks = async(query) => {
 
     const response = await axios.get(API_URL_SEARCH + query)
@@ -83,6 +90,7 @@ const bookService = {
     deleteBook,
     updateBook,
     getBook,
+    getaBook,
     getAllBooks,
     searchBooks
 }

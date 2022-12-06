@@ -13,8 +13,7 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBInput,
-  MDBIcon
+  MDBInput
 }
 from 'mdb-react-ui-kit';
 import {Form} from 'react-bootstrap';
@@ -84,13 +83,6 @@ if(isLoading){
               {errors.password && touched.password && (<p className="error">{errors.password}</p>)}
               <MDBBtn onClick={handleSubmit} type='submit' size='lg'>
                 Login
-              </MDBBtn>
-
-              <hr className="my-4" />
-
-              <MDBBtn className="mb-2 w-100" size="lg" style={{backgroundColor: '#dd4b39'}}>
-                <MDBIcon fab icon="google" className="mx-2"/>
-                Sign in with google
               </MDBBtn>
             </MDBCardBody>
           </MDBCard>

@@ -1,5 +1,5 @@
 .messenger {
-    height: calc(100vh-70px);
+    height: 520px;
     display: flex;
 }
 
@@ -119,4 +119,13 @@
     font-size: 50px;
     color: rgb(236, 234, 234);
     cursor: default;
+}
+
+.chatList{
+ flex: 3;
+}
+
+.chatListWrapper{
+    padding: 10px;
+    height: 100%;
 }

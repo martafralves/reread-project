@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import {toast} from 'react-toastify'
 import {useSelector, useDispatch} from 'react-redux'
-import {getBook, reset} from '../features/books/bookSlice'
+import {getaBook} from '../features/books/bookSlice'
 import { useParams } from 'react-router-dom'
+import BookProfileItem from '../components/books/BookProfileItem'
 import Spinner from '../components/Spinner'
+import '../styles/book.css'
 
 function BookProfile() {
   const {book, isLoading, isSuccess, isError, message} = useSelector((state) => state.books)
@@ -11,16 +13,14 @@ function BookProfile() {
     const dispatch = useDispatch()
     const {id} = useParams()
 
-    console.log(id)
 
     useEffect(() => {
         if(isError){
             toast.error(message)
         }
 
-        dispatch(getBook(id))
-        console.log(getBook(id))
-    }, [isError, message, id])
+        dispatch(getaBook(id))
+    }, [isError, message, id, isSuccess, dispatch])
 
     if(isLoading) {
       return <Spinner/>
@@ -28,7 +28,8 @@ function BookProfile() {
 
   return (
     <div className="book-profile">
-      <h4>Book Details</h4>
+      <h3 className='page-title'>Book Details</h3>
+      <BookProfileItem book={book}/>
     </div>
   )
 }

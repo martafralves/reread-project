@@ -38,7 +38,7 @@ const getUsersBooks = asyncHandler (async (req, res) => {
 
 //GET one book by id
 const getOneBook = asyncHandler( async(req, res) => {
-    const { id, title, author, price, language, condition, status, delivery, description } = await Book.findById(req.params.id)
+    const { id, title, author, price, language, condition, status, delivery, description, user } = await Book.findById(req.params.id)
 
     res.status(200).json({
         _id: id,
@@ -49,8 +49,14 @@ const getOneBook = asyncHandler( async(req, res) => {
         condition,
         status,
         delivery, 
-        description
+        description,
+        user
     })
+
+    if(!title){
+        res.status(400)
+        throw new Error('Book not found')
+    }
 })
 
 //create a book
@@ -76,7 +82,10 @@ const createBook = asyncHandler( async(req, res) => {
 
 //update a book
 const updateBook = asyncHandler( async (req, res) => {
+    const { title, author, description, condition, price, status, delivery, language } = req.body;
+    
     const book = await Book.findById(req.params.id)
+    
     if(!book){
         res.status(400)
         throw new Error('Book not found')
@@ -93,9 +102,19 @@ const updateBook = asyncHandler( async (req, res) => {
         throw new Error ('User not authorized')
     }
 
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    //const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    book.title = title;
+    book.author = author;
+    book.price =price;
+    book.language =language ;
+    book.condition = condition;
+    book.status = status;
+    book.description = description;
+    book.delivery = delivery;
 
-    res.status(200).json(updatedBook)
+    await book.save()
+
+    res.status(200).json(book)
 })
 
 const deleteBook = asyncHandler (async(req, res) => {

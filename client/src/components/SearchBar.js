@@ -10,7 +10,7 @@ import axios from "axios";
 
 
 
-function SearchBar() {
+function SearchBar({book}) {
 
     const dispatch = useDispatch();
 
@@ -24,7 +24,6 @@ function SearchBar() {
         if(isError) {
             toast.error(message)
         }
-
         if(isSuccess){
             setFilteredBooks(books)
         }
@@ -43,7 +42,6 @@ function SearchBar() {
         try{
             res = await axios.get('/api/books/search', {params: {q: query}})
             setFilteredBooks(res.data)
-            console.log(filteredBooks)
             setQuery('')
         }catch(error){
             console.warn(error)
@@ -67,7 +65,7 @@ function SearchBar() {
         {Array.isArray(filteredBooks) ? (filteredBooks.map((book) => (
         <Book key={book._id} book={book}/>
         ))) : [] && 
-        <div>
+        <div className='no-books-found'>
             <h3>Sorry, couldn't find any books for your search.</h3>
             <p>Please try a different book or come back later!</p>
         </div>}

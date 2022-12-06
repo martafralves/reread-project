@@ -20,7 +20,18 @@ const getConversation = asyncHandler( async(req, res) => {
     res.status(200).json(conversation)
 })
 
+//get conversation with two user ids
+const findConversation = asyncHandler( async(req, res) => {
+    
+    const conversation = await Conversation.findOne({
+        members: {$all:[req.params.firstUserId, req.params.secondUserId]},
+    })
+    res.status(200).json(conversation)
+})
+
+
 module.exports = {
     newConversation,
-    getConversation
+    getConversation,
+    findConversation
 }

@@ -73,7 +73,15 @@ const updateUser = asyncHandler( async (req, res) => {
         throw new Error('User not found')
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, 
+        {
+            name: req?.body?.name,
+            email: req?.body?.email,
+            username: req?.body?.username,
+            payment: req?.body?.payment,
+            about: req?.body?.about,
+        
+        }, {new: true})
 
     res.status(200).json(updatedUser)
 })
@@ -128,105 +136,6 @@ const generateToken = (id) => {
 }
 
 
-const loginController = async(req, res) => {
-    if(req.body.googleAccessToken){//oauth
-        axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: {
-                "Authorization": `Bearer ${req.body.googleAccessToken}`
-            }
-        }).then (async response => {
-            const email = response.data.email;
-            const alreadyExists = await User.findOne({email});
-            if(!alreadyExists)
-                return res.status(400).json({message: "User does not exist!"})
-            
-            const token = jwt.sign({
-                email: alreadyExists.email,
-                id: alreadyExists._id
-            }, config.get("JWT_SECRET"), {expiresIn: '1h'})
-
-            res.status(200).json({result: alreadyExists, token})
-        })
-    }else{
-        //get email and pwd from form
-        const {email, password} = req.body;
-
-        if(!email || !password)
-        return res.status(400).json({message:'Invalid fields'})
-
-        try{
-            const alreadyExists = await User.findOne({email});
-            if(!alreadyExists)
-                return res.status(400).json({message: "User does not exist!"})
-            
-            const passwordCheck = await bcrypt.compare(password, alreadyExists.password);
-
-            if(!passwordCheck) return res.status(400).json({message: 'Invalid info'})
-
-            const token = jwt.sign({
-                email: alreadyExists.email,
-                id: alreadyExists._id
-            }, config.get("JWT_SECRET"), {expiresIn:'1h'})
-
-            res.status(200).json({result: alreadyExists, token})
-        }catch(err){
-            console.log(err)
-        }
-
-    }
-}
-
-const signUpController = async(req, res) => {
-    if(req.body.googleAccessToken){ //google oauth
-        axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: {
-                "Authorization": `Bearer ${req.body.googleAccessToken}`
-            }
-        }).then (async response => {
-            const name = response.data.given_name;
-            const email = response.data.email;
-
-            const alreadyExists = await User.findOne({email});
-            if(alreadyExists){
-                return res.status(400).json({message: "User already exists!"})
-            }
-            const result = await User.create({name, email})
-            const token = jwt.sign({
-                email: result.email,
-                id: result._id
-            }, config.get('JWT_SECRET'), {expiresIn:'1h'})
-
-            res.status(200).json({result, token})
-        }).catch(err =>{
-            res.status(400).json({message:'Invalid information'})
-        })
-    }else{ //normal form
-        const {email, name, confirmPassword, password, username} = req.body;
-        try{
-            if(!email || !name || !password || !password.length <= 8 || !confirmPassword || !username)
-                res.status(400).json({message: 'Invalid fields'})
-
-            const alreadyExists = await User.findOne({email});
-                if(alreadyExists){
-                    return res.status(400).json({message: "User already exists!"})
-                }
-
-                const hashPwd = await bcrypt.hash(password, 12)
-                const result = await User.create({password: hashPwd, name, email, username})
-                const token = jwt.sign({
-                    email: result.email,
-                    id: result._id
-                }, config.get('JWT_SECRET'), {expiresIn:'1h'})
-    
-                res.status(200).json({result, token})
-            
-            
-        }catch(err){
-            console.log(err)
-        }
-    }
-}
-
 module.exports = {
     getUsers,
     getOneUser,
@@ -235,6 +144,4 @@ module.exports = {
     deleteUser,
     loginUser,
     getUserData,
-    loginController,
-    signUpController
 }

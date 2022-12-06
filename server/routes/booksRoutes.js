@@ -9,6 +9,7 @@ router.route('/').get(getBooks).post(protect, createBook)
 router.route('/search').get(getBooksBySearch)
 router.route('/user').get(protect, getBookUser)
 router.route('/find/:id').get(getUsersBooks)
-router.route('/:id').get(protect, getOneBook).delete(protect, deleteBook).put(protect, updateBook)
+router.route('/:id').get(protect, getOneBook).delete(protect, deleteBook).put(updateBook)
+router.route('/search/:id').get(getOneBook)
 
 module.exports = router;
