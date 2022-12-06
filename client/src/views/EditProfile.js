@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import {useNavigate, useParams} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import Form from 'react-bootstrap/Form';
 import {useFormik} from 'formik'
@@ -38,16 +38,28 @@ function EditProfile() {
         }
 
         if(isSuccess){
+            toast.success('Profile updated!')
             navigate('/profile')
         }
 
-
     }, [values, user, navigate, isError, isSuccess, message, dispatch])
 
-    function onSubmit(values){
-        dispatch(updateUser(values))
+    function onSubmit(e){
+      const  updatedUser = {
+        name: values.name,
+        email: values.email,
+        username: values.username,
+        payment: values.payment,
+        about: values.about,
+
+      };
+      dispatch(updateUser(updatedUser))
     }
 
+    /*const handleOnChange = (event: FormEvent) => {
+      console.log('Form:: onChange', event)
+    }*/
+    
     if(isLoading){
         return <Spinner/>
     }
@@ -56,7 +68,7 @@ function EditProfile() {
     <div className='bookform-wrapper'>
     <div className='container bookform-container m-4 pt-2'>
         <h2 className='editprofile-title'>Edit Profile information</h2>
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <MDBRow className='mb-4'>
         <MDBCol>
           <MDBInput id='name' label='Name' name='name' type = 'text' value = {values.name}
@@ -73,7 +85,7 @@ function EditProfile() {
       </MDBRow>
       <MDBRow className='mb-4'>
         <MDBCol>
-          <MDBInput id='email' label='Email' name='email'  type='text' value = {values.email}
+          <MDBInput  disabled={true} id='email' label='Email' name='email'  type='text' value = {values.email}
           onChange={handleChange} onBlur={handleBlur}/>
         </MDBCol>
         <MDBCol>
@@ -87,7 +99,7 @@ function EditProfile() {
        className={errors.about && touched.about ? "input-error" : ""}
        onChange={handleChange} onBlur={handleBlur}/>
        {errors.about && touched.about && <p className="error">{errors.about}</p>}
-      <MDBBtn onClick={handleSubmit} className='updateprofile-btn mb-4' type='submit' block>
+      <MDBBtn onClick={handleSubmit} type='submit' className='updateprofile-btn mb-4' block>
         Update profile
       </MDBBtn>
     </Form>

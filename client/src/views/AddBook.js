@@ -38,19 +38,20 @@ function AddBook() {
         if(!user) {
             navigate('/login')
         }
+
         if(isError){
             toast.error(message)
            }
         
         if(isSuccess){
             toast.success('Book added successfully!')
-           } 
-        
-           dispatch(reset())
+           }
+          dispatch(reset())
     }, [user, isError, isSuccess, navigate, dispatch, message])
 
-    function onSubmit(values){
+    function onSubmit(values, {resetForm}){
         dispatch(createBook(values))
+        resetForm({values: ''})
     }
 
     if(isLoading){

@@ -44,11 +44,10 @@ export const deleteBook = createAsyncThunk('books/delete', async(id, thunkAPI) =
 }) 
 
 //update user book
-export const updateBook = createAsyncThunk('books/update', async(bookData, thunkAPI) =>{
+export const updateBook = createAsyncThunk('books/update', async(bookId, bookData, thunkAPI) =>{
     try{
-        const token = thunkAPI.getState().auth.user.token
-        const {id, title, author, description, price, delivery, language, status, condition} = bookData
-        return await bookService.updateBook(id, token)
+        //const {id, title, author, description, price, delivery, language, status, condition} = bookData
+        return await bookService.updateBook(bookId)
     }catch(error){
         const message =
             (error.response &&
@@ -89,11 +88,25 @@ export const getAllBooks = createAsyncThunk('books/getAllBooks', async(_, thunkA
 })
 
 
-//get A single book
+//get A single book information (with auth)
 export const getBook = createAsyncThunk('books/getOne', async(bookId, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token 
         return await bookService.getBook(bookId, token)
+    }catch(error){
+        const message =
+            (error.response &&
+                error.response.data &&
+                 error.response.data.message) ||
+                error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//get A single book information (without auth)
+export const getaBook = createAsyncThunk('books/getaBook', async(bookId, thunkAPI) => {
+    try{
+        return await bookService.getaBook(bookId)
     }catch(error){
         const message =
             (error.response &&
@@ -122,7 +135,8 @@ export const bookSlice = createSlice({
     name: 'book',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        reset: (state, action) => {
+            return initialState}
     },
     extraReducers: (builder) => {
         builder
@@ -214,6 +228,19 @@ export const bookSlice = createSlice({
                 state.book = action.payload
             })
             .addCase(searchBooks.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message=action.payload
+            })
+            .addCase(getaBook.pending, (state) =>{
+                state.isLoading = true
+            })
+            .addCase(getaBook.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.book = action.payload
+            })
+            .addCase(getaBook.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message=action.payload

@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import {addbookSchema} from '../schemas/index';
 import {updateBook, getBook} from '../features/books/bookSlice'
 import { MDBRow, MDBCol, MDBInput,MDBBtn } from 'mdb-react-ui-kit';
-import '../styles/login-form.css'
+import '../styles/forms.css'
 
 
 function EditBook() {
@@ -50,7 +50,7 @@ function EditBook() {
       }
 
       dispatch(getBook(id))
-    }, [values, id, user, isError, isSuccess, navigate, dispatch, message])
+    },[id, user, isError, isSuccess, navigate, dispatch, message])
 
     function onSubmit(values){
         dispatch(updateBook(values))
@@ -61,6 +61,7 @@ function EditBook() {
       }
     
   return (
+    <div className='bookform-wrapper'>
     <div className='container bookform-container m-4 pt-2'>
         <h2 className='bookform-title'>Edit book information</h2>
         <p>Please update your book's information</p>
@@ -125,10 +126,11 @@ function EditBook() {
        className={errors.description && touched.description ? "input-error" : ""}
        onChange={handleChange} onBlur={handleBlur}/>
        {errors.description && touched.description && <p className="error">{errors.description}</p>}
-      <MDBBtn onClick={handleSubmit} className='mb-4' type='submit' block>
+      <MDBBtn onClick={handleSubmit} className='editbook-btn mb-4' type='submit' block>
         Update book
       </MDBBtn>
     </Form>
+    </div>
     </div>
   )
 }

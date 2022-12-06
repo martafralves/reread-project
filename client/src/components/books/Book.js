@@ -16,7 +16,7 @@ function Book({book}) {
           {book.author}
         </MDBCardText>
         <MDBCardText><small>Price: {book.price['$numberDecimal'].toLocaleString()} €</small></MDBCardText>
-        <Button className='btn-book' onClick={() => navigate(`/book/${book.id}`)} variant="primary">View</Button>
+        <Button className='btn-book' onClick={() => navigate(`/book/${book._id}`)} variant="primary">View</Button>
       </MDBCardBody>
     </MDBCard>
   </MDBCol>

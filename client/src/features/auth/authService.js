@@ -38,6 +38,13 @@ const updateUser = async(userId, token, updatedUser) => {
     }
 
     const response = await axios.put(API_URL + userId, config, updatedUser)
+    
+    return response.data
+}
+
+//get A user
+const getaUser = async(userId) => {
+    const response = await axios.get(API_URL + userId)
     return response.data
 }
 
@@ -46,5 +53,6 @@ const authService = {
     logout,
     login,
     updateUser,
+    getaUser
 }
 export default authService
