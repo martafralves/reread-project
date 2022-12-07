@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --watchAll",
+    "test": "cross-env --testEnvironment=node jest --testTimeout=5000 --runInBand --watchAll",
     "dev": "nodemon server/server.js",
     "client": "npm start --prefix client"
   },
