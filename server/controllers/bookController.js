@@ -22,7 +22,7 @@ const getUsersBooks = asyncHandler (async (req, res) => {
     const findUser = await User.findById(req.params.id)
     
     if(!findUser){
-        res.status(400)
+        res.status(404)
         throw new Error('User not found')
     }
     const userBooks = await Book.find({user: findUser})
@@ -102,19 +102,9 @@ const updateBook = asyncHandler( async (req, res) => {
         throw new Error ('User not authorized')
     }
 
-    //const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {new: true})
-    book.title = title;
-    book.author = author;
-    book.price =price;
-    book.language =language ;
-    book.condition = condition;
-    book.status = status;
-    book.description = description;
-    book.delivery = delivery;
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
-    await book.save()
-
-    res.status(200).json(book)
+    res.status(200).json(updatedBook)
 })
 
 const deleteBook = asyncHandler (async(req, res) => {
