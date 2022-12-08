@@ -2,7 +2,7 @@ import Conversations from '../../components/messenger/Conversations'
 import Message from '../../components/messenger/Message'
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-//import { useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import {useSelector} from 'react-redux'
 import { toast } from 'react-toastify';
 import {io} from 'socket.io-client'
@@ -20,6 +20,7 @@ function Messenger(props) {
     const scrollRef = useRef();
 
     const {user} = useSelector((state) => state.auth)
+    const navigate = useNavigate();
     
 
     //const location = useLocation();
@@ -55,6 +56,10 @@ function Messenger(props) {
     }, [])*/
 
     useEffect(() => {
+        if(!user){
+            navigate('/login')
+            toast.error('Not authorized, please login')
+        }
         const getConversations = async() => {
             try{
             const response = await axios.get('api/conversation/'+user.id)
@@ -64,7 +69,7 @@ function Messenger(props) {
             }
         }
         getConversations()
-    }, [user])
+    }, [user, navigate])
 
 
     useEffect(() => {

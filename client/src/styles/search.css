@@ -1,8 +1,11 @@
+.book-container {
+    background-color: #E1FFB1;   
+}
 .search-container{
     text-align: center;
     padding-top: 20px;
-   background-color: #E1FFB1;
-   
+    background-color: #E1FFB1;
+    height: 100vh;
 }
 
 .search-header{

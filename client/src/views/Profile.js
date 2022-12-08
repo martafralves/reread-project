@@ -19,6 +19,7 @@ function Profile() {
     useEffect(() => {
         if(!user) {
             navigate('/login')
+            toast.error('Not authorized, please login')
         }
         if(isError) {
             toast.error(message)
@@ -45,7 +46,7 @@ function Profile() {
             </div>       
             </div>
         </div>
-        <div className='container book-container pt-4'>
+        <div className='container profile-book-container pt-4'>
             {books?.length > 0 ? (
                 <div className ='books'>
                     <h4>Books you are selling</h4>
